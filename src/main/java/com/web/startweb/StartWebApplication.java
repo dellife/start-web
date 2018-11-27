@@ -5,20 +5,33 @@ import com.web.startweb.domain.User;
 import com.web.startweb.domain.enums.BoardType;
 import com.web.startweb.repository.BoardRepository;
 import com.web.startweb.repository.UserRepository;
+import com.web.startweb.resolver.UserArgumentResolver;
 import org.apache.tomcat.jni.Local;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootApplication
-public class StartWebApplication {
+public class StartWebApplication extends WebMvcConfigurerAdapter {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StartWebApplication.class, args);
+	}
+
+	@Autowired
+	private UserArgumentResolver userArgumentResolver;
+
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolverList) {
+		argumentResolverList.add(userArgumentResolver);
 	}
 
 	@Bean
